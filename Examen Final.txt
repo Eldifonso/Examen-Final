@@ -1,0 +1,59 @@
+
+
+
+
+Punto 1 ESTA ES LA FUNCION
+
+CREATE OR REPLACE FUNCTION finSum(NUMERO IN NUMBER)
+    RETURN VARCHAR2
+IS
+    RESULTADO NUMBER;
+    I NUMBER;
+BEGIN
+    IF NUMERO >= 1 AND NUMERO <= 99999 THEN
+        I := 0;
+        RESULTADO := 0;
+        WHILE I <= NUMERO LOOP
+            I := I + 1;
+            IF MOD(I,3) = 0 OR MOD(I,5) = 0 THEN
+                RESULTADO := RESULTADO + I;
+            END IF;
+        END LOOP;
+    RETURN TO_CHAR(RESULTADO);
+END;
+
+
+Punto 2 CREACION DE TABLA
+
+
+CREATE TABLE SUMS
+(
+  BASE_VALUE VARCHAR2 (25),
+  
+  RESULT VARCHAR2 (4000) 
+ );
+
+PUNTO 3 ESTE ES EL TRIGGER
+
+CREATE OR REPLACE TRIGGER EXAMEN
+
+BEFORE INSERT ON SUMS
+FOR EACH ROW
+DECLARE
+    BASE_VALUE VARCHAR2 (25),
+    RESULT VARCHAR2 (4000);
+BEGIN
+    base_value := TO_NUMBER(:new.base_value);
+    result := finSum(base_value);
+    result := TO_CHAR(result);
+    INSERT INTO SUMS(base_value, result) VALUES (:new.base_value, result);
+END;
+
+
+
+
+
+
+
+
+
